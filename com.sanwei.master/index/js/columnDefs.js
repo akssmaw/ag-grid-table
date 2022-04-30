@@ -47,19 +47,23 @@ const columnDefs = [{
 	        id:1,
 	 		field: "code",
 	 		sortable: true,
-			 rowGroup: false,
-	 		headerName: "编码",
+			 
+			 enableRowGroup: true ,
+	 		headerName: "商家编码",
 	 		filter: 'agMultiColumnFilter',
 	 		filterParams: {
 	 			applyMiniFilterWhileTyping: true,
+				
 	 		},
 	 	},
 	 	{
 			id:2,
 	 		field: "name",
 	 		sortable: true,
-	 		headerName: "名称",
-	     	rowGroup: false,
+	 		headerName: "书名",
+	     	// rowGroup: false,
+			enableRowGroup: true ,
+			enableRowGroup: true ,
 	 		filter: 'agMultiColumnFilter',
 	 		filterParams: {
 	 			applyMiniFilterWhileTyping: true,
@@ -67,26 +71,149 @@ const columnDefs = [{
 	 	},
 	 	{
 			id:3,
-	 		field: "type",
+	 		field: "series",
 	 		sortable: true,
-	 		headerName: "类型",
-	 		rowGroup: false,
+	 		headerName: "系列",
+	 		// rowGroup: false,
+			enableRowGroup: true ,
 	 		filter: 'agMultiColumnFilter',
 	 		filterParams: {
 	 			applyMiniFilterWhileTyping: true,
+				  
 	 		},
 	 	},
 	 	{
 			id:4,
 	 		field: "time",
 	 		sortable: true,
-			 rowGroup: false,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
 	 		headerName: "时间",
 	 		filter: 'agDateColumnFilter',
 	 		// add extra parameters for the date filter
 	 		filterParams: filterParamsTime
 	 	},
-
+		{
+			id:5,
+			field: "tm",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "天猫运营",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:6,
+			field: "pdd",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "拼多多运营",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:7,
+			field: "sup",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "供货商",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:8,
+			field: "brand",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "品牌",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:9,
+			field: "spec",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "版本",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},{
+			id:10,
+			field: "back",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "返点",
+			filter: 'agNumberColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:11,
+			field: "barcode",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "主条码",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:12,
+			field: "price",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "定价",
+			filter: 'agNumberColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:13,
+			field: "disc",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "折扣",
+			filter: 'agNumberColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:14,
+			field: "cost",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "单本成本",
+			filter: 'agNumberColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		{
+			id:15,
+			field: "shop",
+			sortable: true,
+			 // rowGroup: false,
+			 enableRowGroup: true ,
+			headerName: "店铺",
+			filter: 'agMultiColumnFilter',
+			// add extra parameters for the date filter
+			filterParams: filterParamsTime
+		},
+		
 	 ]
 	 
 	 

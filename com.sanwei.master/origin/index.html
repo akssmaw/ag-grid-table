@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mast-admin</title>
+ 
+</head>
+
+<body>
+  
+  
+  <h1 id="title" onclick="sumbit()">Hello World!</h1>
+  
+<div class="sample1 demo-grid middle" style="max-width: 500em;height: 500px;"></div>
+    <script type="text/javascript" src="cheetah/3.3.1.min.js"></script>
+  <script src="cheetah/cheetahGrid.js"></script>
+  <script>
+   /*
+     record object properties
+     {
+       personid: 'ID',
+       fname: 'First Name',
+       lname: 'Last Name',
+       email: 'Email',
+       birthday: 'birthday',
+     }
+    */
+   var records = [];
+   
+   var grid = new cheetahGrid.ListGrid({
+     parentElement: document.querySelector(".sample1"),
+     header: [
+		 
+       { field: "code", caption: "First Name", width: 200 },
+       { field: "name", caption: "Last Name", width: 200 },
+ 
+ 
+     ],
+  
+   });
+   grid.records = records;
+ 
+ 
+ 
+		  fetch('http://localhost:8081/ES/selectEsJson?dbList=shu_20210103_es')
+		  							.then(response => response.json())
+		  							.then(data => {
+		  								
+		  						 
+	 grid.records =  	data.data
+ 						});
+	 
+	 
+	  
+  </script>
+</body>
+
+
+</html>

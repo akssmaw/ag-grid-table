@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
- 
- <!-- 重要 -->
+
+		<!-- 重要 -->
 		<!-- <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js"></script> -->
-		 <!-- 	<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+		<!-- 	<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
 		 	<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css"> -->
-		
-	 
-	 <script src="ag-grid/ag-grid.js"></script>
-	<link rel="stylesheet" href="ag-grid/ag-grid.css" />
-	<link rel="stylesheet" href="ag-grid/ag-theme-alpine.css" />
+
+
+		<script src="ag-grid/ag-grid.js"></script>
+		<link rel="stylesheet" href="ag-grid/ag-grid.css" />
+		<link rel="stylesheet" href="ag-grid/ag-theme-alpine.css" />
+		<link  rel="stylesheet" href="ag-grid/ag-grid-head.css"/>
 
 
 
@@ -33,7 +34,20 @@
 
 				<el-collapse-item title="Internet" name="1" style="text-align: center;">
 					<div>
-						<!-- <el-input clearable v-model="inputCode" placeholder="请输入编码" style="width: 200px;"></el-input> -->
+						<el-input clearable v-model="inputCode" placeholder="请输入编码" style="width: 400px;"></el-input>
+					 
+						   <el-date-picker
+						      v-model="getTimeValue"
+						      type="daterange"
+						      align="center"
+						      unlink-panels
+							  value-format="yyyy-MM-dd"
+						      range-separator="至"
+						      start-placeholder="开始日期"
+						      end-placeholder="结束日期"
+						      :picker-options="pickerOptions">
+						    </el-date-picker>
+						  
 						<el-select v-model="selectValue" @focus="selectFocus" @change="selectChange" multiple
 							placeholder="选择库">
 							<el-option v-for="item in options" :key="item.value" :label="item.label"
@@ -41,20 +55,23 @@
 							</el-option>
 
 						</el-select>
+		 
+						  
 						<el-button type="primary" @click="sumbit">查询</el-button>
+						<el-button type="primary" @click="sumbit2">加载20w</el-button>
 					</div>
 				</el-collapse-item>
 
 
 				<el-collapse-item title="Localhost" name="2">
-				 
-			 <!-- 单选按钮分类 -->
-					<el-radio v-model="radio" label="0" @change="radioGroupClick">No</el-radio>
+
+					<!-- 单选按钮分类 -->
+					<!-- <el-radio v-model="radio" label="0" @change="radioGroupClick">No</el-radio>
 					<el-radio-group v-model="radio" @change="radioGroupClick">
 						<el-radio v-for="list in columnDefs" :key="list.id" :label="list.id">{{list.headerName}}
 						</el-radio>
-					</el-radio-group>
- <!-- 单选按钮分类 -->
+					</el-radio-group> -->
+					<!-- 单选按钮分类 -->
 
 				</el-collapse-item>
 
@@ -64,7 +81,7 @@
 		<!-- 	<h1>Hello from AG Grid!</h1> -->
 		<!-- 生成table -->
 		<p></p>
-		<div id="myGrid" style="height: 600px;width:800px;margin: 0 auto;" class="ag-theme-alpine"></div>
+		<div id="myGrid" style="height: 600px;width:1200px;margin: 0 auto;" class="ag-theme-alpine"></div>
 
 		<script type="text/javascript" charset="utf-8">
 			// specify the columns
@@ -90,16 +107,20 @@
 				rowDeselection: true,
 				animateRows: true, //排序动画
 				pagination: true, //开启分页（前端分页）
-				// paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
+				paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
 				defaultColDef: {
 					// 可拖动
 					sortable: true,
 					resizable: true,
 
 				},
+				  suppressDragLeaveHidesColumns: true,
+				  suppressMakeColumnVisibleAfterUnGroup: true,
+				  rowGroupPanelShow: 'always',
 				// 分页
 				paginationNumberFormatter: function(params) {
-					console.log(params)
+					console.log("分页list")
+					// console.log(params)
 					return '[' + params.value.toLocaleString() + ']';
 				},
 				// 粘贴版
@@ -143,24 +164,55 @@
 		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
 		<script>
+			var dataJson=[];
 			new Vue({
 				el: '#vue-app',
 				data: function() {
 					return {
 						activeNames: [],
 						inputCode: '',
-						options: [{
-							value: '选项1',
-							label: '我是测试'
-						}, {
-							value: '选项2',
-							label: '我是测试2'
-						}, {
-							value: '选项3',
-							label: '我是测试3'
-						}],
+						options: [],
 						selectValue: [],
-						radio: '0'
+						radio: '0',
+						selectDbCount:0,
+						 pickerOptions: {
+						          shortcuts: [
+									  {
+									    text: '最近一天',
+									    onClick(picker) {
+									      const end = new Date();
+									      const start = new Date();
+									      start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+									      picker.$emit('pick', [start, end]);
+									    }
+									  },{
+						            text: '最近一周',
+						            onClick(picker) {
+						              const end = new Date();
+						              const start = new Date();
+						              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+						              picker.$emit('pick', [start, end]);
+						            }
+						          }, {
+						            text: '最近一个月',
+						            onClick(picker) {
+						              const end = new Date();
+						              const start = new Date();
+						              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+						              picker.$emit('pick', [start, end]);
+						            }
+						          }, {
+						            text: '最近三个月',
+						            onClick(picker) {
+						              const end = new Date();
+						              const start = new Date();
+						              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+						              picker.$emit('pick', [start, end]);
+						            }
+						          }],
+								  
+						        },
+								getTimeValue:'',
 					}
 				},
 				methods: {
@@ -173,52 +225,83 @@
 					},
 					selectFocus() {
 						console.log("ajax获取索引库")
-						
-					 
+						//清空索引库
+						this.options = [];
+						fetch(base + '/selectEsAll')
+							.then(response => response.json())
+							.then(data => {
+								for (var i = 0; i < data.length; i++) {
+									this.options.push({
+										value: data[i],
+										lable: data[i]
+									})
+								}
+								console.log(this.options)
+
+							});
+
+						this.option = {
+							value: '1',
+							lable: '1'
+						}
+
 						console.log(this.option)
-						
+
 					},
 					/* 搜索*/
 					sumbit() {
-						if(this.selectValue.length==0){
-							 this.$notify.error({
-							          title: '错误',
-							          message: '未选择查询库'
-							        });
-							console.log("请选择库")
-							return;
-						}
+			  
+					 
 
 						console.log(this.selectValue)
-fetch(base + '/selectEsJson?dbList='+this.selectValue)
-				.then(response => response.json())
-				.then(data => {
-					console.log(data)
+						fetch(base + '/esTest6?dbList=' + this.selectValue+"&getTime="+this.getTimeValue[0]+"&starTime="+this.getTimeValue[1]+"&code="+this.inputCode)
+							.then(response => response.json())
+							.then(data => {
+							 
+							 
+								dataJson = data.data;
+							 
+								gridOptions.api.setRowData(data.data);
 
-					gridOptions.api.setRowData(data.data);
-
-				});
+							});
 
 
 					},
+					sumbit2(){
+						console.log("现在"+dataJson.length)
+						
+						fetch(base + '/selectEsJson?dbList=' + this.selectValue)
+							.then(response => response.json())
+							.then(data => {
+								
+						     console.log("拿到"+data.data.length)
+						 
+					 console.log()
+							 
+							 
+								gridOptions.api.updateRowData({ add: data.data });
+								 	
+							});
+							
+					},
 					// 聚合某一个字段
 					radioGroupClick(value) {
-						if(value==0){
-							
+						if (value == 0) {
+
 							gridOptions.api.setColumnDefs(columnDefs);
 							return;
 						}
-						console.log("选择的单选按钮id:::"+columnDefs)
+						console.log("选择的单选按钮id:::" + columnDefs)
 						console.log(columnDefs)
 						const newColumnDefs = columnDefs;
 
-						//拿到全部的表头 对象进行指定id的修改 
+						//拿到全部的表头 对象进行指定id的修改
 						newColumnDefs[value - 1].rowGroup = true;
 						//加载完成数据 但是newColumnDefs是不变的 下次来拿到的还是这个newColumnDefs 所以值是相同的
 						gridOptions.api.setColumnDefs(newColumnDefs);
 						//那么就需要修改这个值 在返回给主页index.html
 						newColumnDefs[value - 1].rowGroup = false;
-						
+
 						console.log(columnDefs)
 
 					}
